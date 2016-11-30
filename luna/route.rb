@@ -20,7 +20,7 @@ module Luna
 
     def action_variables(request_path)
       # request_pathの最後に'/'があれば削除
-      request_path.chop! if request_path[-1] == '/'
+      request_path.chop! if request_path.gsub!(%r{/+}, '/')[-1] == '/'
       # 正規表現で何番目のvar_url_listにマッチするか調べる
       find_route = @var_rexp.match(request_path)
       # var_url_listのものでない(nil)ならば、O(1)でHashから検索

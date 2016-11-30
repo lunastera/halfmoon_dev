@@ -25,7 +25,11 @@ class Action
 
   protected
 
-  def render(mime_type, file)
-    return file, mime_type
+  def render(type, file)
+    current = File.expand_path(File.dirname(__FILE__))
+    ERB.new(
+      File.open(current + '/view/' + file + '.' + type.to_s + '.erb').read
+    ).result(binding)
+    # return file, mime_type
   end
 end

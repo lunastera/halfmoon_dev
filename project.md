@@ -4,7 +4,7 @@
 
 ```ruby
 
-# リクエスト処理クラス
+ # リクエスト処理クラス
 class Request
   attr_reader :env, :method
 
@@ -48,7 +48,7 @@ class Request
   end
 end
 
-# レスポンス処理クラス
+ # レスポンス処理クラス
 class Response
   attr_accessor :status_code
   attr_reader   :headers
@@ -71,3 +71,8 @@ class Response
 end
 
 ```
+
+
+## 次に
+
+erbからrenderを呼ぶ

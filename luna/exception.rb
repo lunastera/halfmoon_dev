@@ -1,3 +1,6 @@
+
+require_relative './exceptions/show.rb'
+
 module Luna
   HTTP_RESPONSE_STATUS = {
     100 => 'Continue',
@@ -70,32 +73,6 @@ module Luna
 
     def status_message
       HTTP_RESPONSE_STATUS[@status_code]
-    end
-  end
-
-  # エラーが起きた際に表示するページを生成するコード
-  class ShowException
-    def initialize(status_code)
-      # @status_code = status_code
-      @status = {}
-      @status[:Code] = status_code
-      @status[:Mes]  = HTTP_RESPONSE_STATUS[status_code]
-    end
-
-    def show
-      body = <<-EOS
-      <!DOCTYPE html>
-      <html lang="ja">
-      <head>
-        <meta charset="UTF-8">
-        <title>#{@status[:Code]} #{@status[:Mes]}/title>
-      </head>
-      <body>
-        <h1>#{@status[:Code]} #{@status[:Mes]}</h1>
-      </body>
-      </html>
-      EOS
-      [@status_code, { 'Content-Type' => 'text/html' }, [body]]
     end
   end
 end

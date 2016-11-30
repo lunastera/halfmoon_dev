@@ -1,7 +1,8 @@
-
+require 'singleton'
 # __END__
 # ConfigBaseClass
 class ConfigBase
+  include Singleton
   def initialize
   end
 
@@ -37,24 +38,10 @@ class ConfigBase
         yield ary[i].first, ary[i].last
       end
     end
+
+    def [](key)
+      class_ins = all
+      class_ins[key]
+    end
   end
 end
-
-# Main config
-class Config < ConfigBase
-  # database settings
-  add :dbaddress,   'localhost'
-  add :dbport,      '8888'
-  add :dbuser,      'root'
-  add :dbpass,      'root'
-
-  # path setting
-  add :ctrl_path,   './app/controller'
-  add :def_act,     'index'
-  add :assets_dir,  'assets'
-  add :assets_root, 'app'
-end
-
-Config.new
-
-p Config.get :dbaddress

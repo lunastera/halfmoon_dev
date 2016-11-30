@@ -20,12 +20,14 @@ module Luna
 
       ins = Kernel.const_get(@args[:Klass]).new(compile_params(req))
       # ins.before_action
-      file, type = ins.send(@args[:Action].to_sym)
+      # file, type = ins.send(@args[:Action].to_sym)
       # ins.after_action
 
-      ERB.new(File.open(File.expand_path(
-        File.dirname(__FILE__)) + '/app/view/' + file + '.' + type.to_s + '.erb'
-      ).read).result(ins.bind)
+      ins.send(@args[:Action].to_sym)
+
+      # ERB.new(File.open(File.expand_path(
+      #   File.dirname(__FILE__)) + '/app/view/' + file + '.' + type.to_s + '.erb'
+      # ).read).result(ins.bind)
     end
 
     protected
@@ -47,6 +49,7 @@ module Luna
       req = Rack::Request.new(env)
       args = @route.action_variables(req.path_info)
       if args[:File] == 404
+        p args
         ex = ShowException.new(404)
         return ex.show
       end
