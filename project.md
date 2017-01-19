@@ -73,6 +73,19 @@ end
 ```
 
 
-## 次に
+## 考えてること
 
-erbからrenderを呼ぶ
+1.
+Lunaモジュールに全て突っ込むよりControllerで使うものは  
+Actionクラスに定義した方がいいのでは・・・？
+
+- Action::Auth
+- Action::Util
+
+Controller < Action
+
+self::Auth.newとかできる
+
+2.
+ファイル名を書いたならクラス名の記述はいらないのでは？  
+ルーティングが冗長になる

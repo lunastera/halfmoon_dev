@@ -1,16 +1,19 @@
 
-require_relative '../action'
+require 'luna/action'
 
 class Login < Action
-  def index(args = nil)
-    @args = args
-    @action = { Class: fullname, Method: __method__ }
-    render(:html, 'debug')
+  def before_action
+    @auth = Auth.new(@session)
   end
 
-  def login(args = nil)
-    @args = args
-    @action = { Class: fullname, Method: __method__ }
+  def index
+    if @auth.is_login?
+
+    end
+    render(:html, 'index')
+  end
+
+  def login
     render(:html, 'login')
   end
 

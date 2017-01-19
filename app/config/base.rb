@@ -43,5 +43,12 @@ class ConfigBase
       class_ins = all
       class_ins[key]
     end
+
+    def get_all(pattern)
+      class_ins = all
+      class_ins
+        .select { |k, _| k.to_s.match(pattern) }
+        .map { |k, v| [k.to_s.gsub(pattern, '').to_sym, v] }.to_h
+    end
   end
 end

@@ -1,5 +1,5 @@
 
-require_relative './exceptions/show.rb'
+require 'luna/exceptions/show'
 
 module Luna
   HTTP_RESPONSE_STATUS = {

@@ -1,16 +1,16 @@
 
 require 'rack'
+require 'sqlite3'
 
 # other
-require_relative './luna/exception'
-require_relative './luna/util'
-require_relative './luna/route'
+require 'luna/exception'
+require 'luna/util'
+require 'luna/route'
 
 module Luna
   # Action matched Class
   class ActionMatching
-    # params
-    # action_args =>
+    # @params [Hash] action_args File: ファイルパス, Klass: クラス名, Action: 実行されるメソッド, PathV: パスパラメータ
     def initialize(action_args)
       @args = action_args
     end
@@ -22,12 +22,7 @@ module Luna
       # ins.before_action
       # file, type = ins.send(@args[:Action].to_sym)
       # ins.after_action
-
       ins.send(@args[:Action].to_sym)
-
-      # ERB.new(File.open(File.expand_path(
-      #   File.dirname(__FILE__)) + '/app/view/' + file + '.' + type.to_s + '.erb'
-      # ).read).result(ins.bind)
     end
 
     protected
@@ -35,7 +30,7 @@ module Luna
     def compile_params(req)
       get = req.GET
       post = req.POST
-      { Paths: @args[:PathV], GET: get, POST: post }
+      { Paths: @args[:PathV], GET: get, POST: post, Session: req.session }
     end
   end
 
