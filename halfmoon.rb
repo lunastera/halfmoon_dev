@@ -3,11 +3,12 @@ require 'rack'
 require 'sqlite3'
 
 # other
-require 'luna/exception'
-require 'luna/util'
-require 'luna/route'
+require 'halfmoon/exception'
+require 'halfmoon/util'
+require 'halfmoon/route'
+require 'halfmoon/action'
 
-module Luna
+module HalfMoon
   # Action matched Class
   class ActionMatching
     # @params [Hash] action_args File: ファイルパス, Klass: クラス名, Action: 実行されるメソッド, PathV: パスパラメータ

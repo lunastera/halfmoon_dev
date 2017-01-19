@@ -1,6 +1,6 @@
 require 'erb'
 
-module Luna
+module HalfMoon
   # Routing
   class Route
     attr_reader :var_rexp
@@ -87,8 +87,9 @@ module Luna
     def require_action(action)
       path, klass, action = action.split(/[:#]/)
       begin
-        require_relative '../' + path
+        require path
       rescue LoadError => ex
+        p path
         raise ex, 'specified file does not exist.'
       end
     end
@@ -97,5 +98,5 @@ end
 
 # require_relative './routes.rb'
 #
-# ins = Luna::Route.new($mapping)
+# ins = HalfMoon::Route.new($mapping)
 # ins.instances

@@ -1,7 +1,7 @@
 
-require 'luna/exceptions/show'
+require 'halfmoon/exceptions/show'
 
-module Luna
+module HalfMoon
   HTTP_RESPONSE_STATUS = {
     100 => 'Continue',
     101 => 'Switching Protocols',

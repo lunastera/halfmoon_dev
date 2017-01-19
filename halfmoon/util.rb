@@ -1,6 +1,6 @@
 require 'uri'
 
-module Luna
+module HalfMoon
   # 必要な定数を宣言する
   HTTP_REQUEST_METHODS = {
     'GET'     => :GET,

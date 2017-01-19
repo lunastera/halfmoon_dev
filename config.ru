@@ -1,15 +1,15 @@
 
 $LOAD_PATH << File.expand_path(File.dirname(__FILE__))
 
-require 'luna'
+require 'halfmoon'
 require 'app/config/routes'
 require 'app/config/config'
 require 'rack'
 
 Config.add :root, File.expand_path(File.dirname(__FILE__))
 
-# run CommonLogger.new(ShowExceptions.new(Luna::Luna.new))
-app = Luna::Application.new($mapping)
+# run CommonLogger.new(ShowExceptions.new(HalfMoon::HalfMoon.new))
+app = HalfMoon::Application.new($mapping)
 
 require 'rack/session/cookie'
 app = Rack::Session::Cookie.new(app, Config.get_all(/session_/))

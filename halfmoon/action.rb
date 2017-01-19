@@ -1,5 +1,4 @@
-require 'luna'
-require 'app/model'
+require 'halfmoon/model'
 # Action
 class Action
   def initialize(params)

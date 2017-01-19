@@ -1,6 +1,6 @@
 require 'erb'
 
-module Luna
+module HalfMoon
   # エラーが起きた際に表示するページを生成するコード
   class ShowException
     def initialize(status_code)

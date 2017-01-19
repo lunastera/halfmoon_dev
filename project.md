@@ -76,7 +76,7 @@ end
 ## 考えてること
 
 1.
-Lunaモジュールに全て突っ込むよりControllerで使うものは  
+HalfMoonモジュールに全て突っ込むよりControllerで使うものは  
 Actionクラスに定義した方がいいのでは・・・？
 
 - Action::Auth

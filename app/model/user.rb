@@ -1,4 +1,4 @@
-class User < ModelBase
+class User < Model::Base
   attr_accessor :name, :age
 
   def initialize(*args)

@@ -1,6 +1,3 @@
-
-require 'luna/action'
-
 # TestController
 class TestApp < Action
   # Model：Userを使うことを宣言

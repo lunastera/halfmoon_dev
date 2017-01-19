@@ -1,6 +1,6 @@
 require 'digest/sha1'
 
-module Luna
+module HalfMoon
   class Auth
     class << self
       def hash(user, password)

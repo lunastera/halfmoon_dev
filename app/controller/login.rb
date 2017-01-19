@@ -1,6 +1,3 @@
-
-require 'luna/action'
-
 class Login < Action
   def before_action
     @auth = Auth.new(@session)
