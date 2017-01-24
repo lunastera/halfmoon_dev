@@ -1,5 +1,5 @@
 
-require 'halfmoon/exceptions/show'
+# require 'halfmoon/exceptions/show'
 
 module HalfMoon
   HTTP_RESPONSE_STATUS = {
@@ -73,6 +73,32 @@ module HalfMoon
 
     def status_message
       HTTP_RESPONSE_STATUS[@status_code]
+    end
+  end
+
+  # エラーが起きた際に表示するページを生成するコード
+  class ShowException
+    def initialize(status_code)
+      # @status_code = status_code
+      @status = {}
+      @status[:Code] = status_code
+      @status[:Mes]  = HTTP_RESPONSE_STATUS[status_code]
+    end
+
+    def show
+      path = Config[:root] + '/app/exceptions/'
+      files = Dir.glob(path + '*.erb')
+      puts files
+      if files.include?(path + @status[:Code].to_s + '.erb')
+        body = ERB.new(
+          File.open(path + @status[:Code].to_s + '.erb').read
+        ).result(binding)
+      else
+        body = ERB.new(
+          File.open(path + 'default.erb').read
+        ).result(binding)
+      end
+      [@status[:Code], { 'Content-Type' => 'text/html' }, [body]]
     end
   end
 end

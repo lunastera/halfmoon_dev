@@ -1,6 +1,11 @@
 require 'halfmoon/model'
 # Action
 class Action
+  MIME_TYPES = {
+    html: 'text/html',
+    json: 'application/json'
+  }.freeze
+
   def initialize(params)
     @paths = params[:Paths]
     @get   = params[:GET]
@@ -34,15 +39,16 @@ class Action
 
   protected
 
-  def render(option, file)
+  def render(mime_type, file)
     view_path = Config[:root] + Config[:view_path]
-    ERB.new(
+    header = { 'Content-Type' => MIME_TYPES[mime_type] }
+    body = ERB.new(
       File.open(view_path + file + '.erb').read
     ).result(binding)
-    # return file, mime_type
+    [200, header, [body]]
   end
 
   def redirect_to(path)
-    # TODO
+    [303, { 'Location' => path }, ['']]
   end
 end

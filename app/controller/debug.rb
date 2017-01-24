@@ -16,7 +16,8 @@ class TestApp < Action
 
   def show
     @action = { Class: fullname, Method: __method__ }
-    render(:html, 'debug')
+    redirect_to('/api/test')
+    # render(:html, 'debug')
   end
 
   def edit

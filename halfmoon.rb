@@ -1,5 +1,6 @@
 
 require 'rack'
+require 'erb'
 require 'sqlite3'
 
 # other
@@ -23,11 +24,8 @@ module HalfMoon
       # ins.before_action
       # file, type = ins.send(@args[:Action].to_sym)
       # ins.after_action
-      res = ins.send(@args[:Action].to_sym)
-      if res == :redirect
+      ins.send(@args[:Action].to_sym)
     end
-
-    protected
 
     def compile_params(req)
       get = req.GET
@@ -51,7 +49,8 @@ module HalfMoon
         return ex.show
       end
       act_match = ActionMatching.new(args)
-      response = act_match.response_action(req)
+      res = act_match.response_action(req)
+      res
     end
 
     # リクエストを捌く

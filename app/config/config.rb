@@ -3,7 +3,7 @@ require 'digest/sha2'
 # Main config
 class Config < ConfigBase
   # app setting
-  add :serv_port,    '9292'
+  add :serv_port,    '8282'
 
   # database settings
   add :db_host,      'localhost'

@@ -22,11 +22,6 @@ module HalfMoon
     '/' => '&#x2F;'
   }.each { |_, v| v.freeze }
 
-  MIME_TYPES = {
-    '.html' => 'text/html',
-    '.json' => 'application/json'
-  }.freeze
-
   # Utils
   module Util
     def html_escape(str)
