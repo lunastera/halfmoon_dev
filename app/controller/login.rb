@@ -1,16 +1,16 @@
 class Login < Action
-  def before_action
-    @auth = Auth.new(@session)
-  end
-
   def index
-    if @auth.is_login?
-
-    end
     render(:html, 'index')
   end
 
   def login
+    unless @post[:id].nil?
+      user = User.find_by(id: @post[:id])
+      if HalfMoon::Auth.password(@post[:id], @post[:pass]) == user.pass
+        @session[:user] = user
+        redirect_to()
+      end
+    end
     render(:html, 'login')
   end
 

@@ -3,8 +3,13 @@ module Model
   class Base
     class << self
       # 現状SQLiteのみ 後から他のデータベースにも対応
-      def all
+      def all(name)
         @db.execute('SELECT * FROM ' + name)
+      end
+
+      # カラム名
+      def find_by(hash)
+        @db.execute('')
       end
     end
   end
@@ -15,10 +20,20 @@ module Model
       @column = {}
     end
 
+    def connect(dbname = 'default')
+      raise TypeException unless dbname.is_a?(String)
+      @db = SQLite3::Database.new(Config[:root] + Config[:db_path] + dbname)
+    end
+
+    def disconnect
+      @db.close
+    end
+
     def create_table(table_name, &block)
       yield(self)
-      parser
-
+      connect
+      @db.exec(parser(table_name))
+      disconnect
     end
 
     def string(name, *opt)
@@ -52,6 +67,8 @@ module Model
             suffix += " #{k} #{v}"
           elsif k == :null && !v
             suffix += ' not null'
+          elsif k == :primary && v
+            suffix += ' primary key'
           end
         end
       elsif !opt.empty?
@@ -61,20 +78,14 @@ module Model
       @column[name] = type + suffix
     end
 
-    def parser
-      sql = 'create table user('
+    def parser(table_name)
+      sql = "create table #{table_name}("
       @column.each do |k, v|
         sql += ' ' unless sql[-1] == '('
         sql += "#{k} #{v}"
       end
       sql = sql.chop + ')'
       sql
-    end
-
-    def create(dbname = 'default')
-      raise TypeException unless dbname.is_a?(String)
-      @db = SQLite3::Database.new(Config[:root] + Config[:db_path] + '/db/' + dbname)
-      @db.exec(parser)
     end
   end
 end

@@ -23,7 +23,8 @@ module HalfMoon
       # ins.before_action
       # file, type = ins.send(@args[:Action].to_sym)
       # ins.after_action
-      ins.send(@args[:Action].to_sym)
+      res = ins.send(@args[:Action].to_sym)
+      if res == :redirect
     end
 
     protected
@@ -50,8 +51,7 @@ module HalfMoon
         return ex.show
       end
       act_match = ActionMatching.new(args)
-      body = act_match.response_action(req)
-      [200, { 'Content-Type' => 'text/html' }, [body]]
+      response = act_match.response_action(req)
     end
 
     # リクエストを捌く
