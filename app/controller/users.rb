@@ -1,9 +1,11 @@
 class UsersController < Action
+  use_model :User
   def index
     render(:html, 'users/index')
   end
 
   def show
+    @users = User.all
     render(:html, 'users/show')
   end
 

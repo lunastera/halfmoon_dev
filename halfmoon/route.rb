@@ -1,4 +1,5 @@
 require 'erb'
+require 'pp'
 
 module HalfMoon
   # Routing
@@ -22,7 +23,7 @@ module HalfMoon
       # request_pathの最後に'/'があれば削除
       request_path.chop! if request_path.gsub!(%r{/+}, '/')[-1] == '/'
       # 正規表現で何番目のvar_url_listにマッチするか調べる
-      find_route = @var_rexp.match(request_path)
+      find_route = @var_rexp.match(request_path) #/users/show
       # var_url_listのものでない(nil)ならば、O(1)でHashから検索
       if find_route.nil?
         actions = @dict_path[request_path]
@@ -47,7 +48,7 @@ module HalfMoon
     # mappingを加工する
     def compile_path_regexp(mapping, base_path, current_path)
       buff = []
-      current_fullpath = "#{base_path}#{current_path}"
+      current_fullpath = "#{base_path}#{current_path}" # /users
       mapping.each do |path, action|
         if action.is_a?(Array)
           buff << path
@@ -62,6 +63,7 @@ module HalfMoon
 
     # マッチング用のデータを作成
     def compile_match_list(path, current_fullpath, action)
+      # puts "'#{path}' => #{current_fullpath} #{action}"
       if (var = path.scan(/:\w+/)) != []
         reg_path = path.gsub(%r{:[^./]+}, '(\w+)')
         require_action(action)
@@ -71,9 +73,11 @@ module HalfMoon
           action
         ]
       else
-        @dict_path[current_fullpath] = action
+        # puts "'#{path}' => #{current_fullpath} #{action}"
+        @dict_path[current_fullpath + path] = action
       end
-      path.gsub(%r{:[^./]+}, '\w+') + '(\z)' if path != ''
+      # からパスだけ・・・？
+      path.gsub(%r{:[^./]+}, '\w+') + '(\z)' if path.scan(/:\w+/) != []
     end
 
     # var_url_listの場合、場所を特定する正規表現も必要なので作成

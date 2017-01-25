@@ -9,7 +9,7 @@ $mapping = [
   ]],
   ['/users', [
     ['',           'users/index'],
-    ['/index',     'users/index'],
+    ['/show',      'users/show'],
     ['/show/:id',  'users/show']
   ]]
 ]

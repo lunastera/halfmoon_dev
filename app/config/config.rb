@@ -10,6 +10,7 @@ class Config < ConfigBase
   add :db_port,      '8888'
   add :db_user,      'root'
   add :db_pass,      'root'
+  add :db_name,      'default.sqlite3'
 
   # path setting
   add :ctrl_path,   '/app/controller/'

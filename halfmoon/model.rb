@@ -2,14 +2,41 @@ module Model
   # model base
   class Base
     class << self
-      # 現状SQLiteのみ 後から他のデータベースにも対応
-      def all(name)
-        @db.execute('SELECT * FROM ' + name)
+      # def init
+      #   require 'app/db/migration/' + self.name.downcase + '_migration'
+      #   klass = self.name + 'Migration'
+      #   ins = Kernel.const_get(klass).new
+      #   ins.column
+      # end
+
+      def all
+        result = nil
+        SQLite3::Database.new(db_name) do |db|
+          result = db.execute("SELECT * FROM #{table_name}")
+        end
+        result
       end
 
       # カラム名
       def find_by(hash)
-        @db.execute('')
+        key, val = ''
+        result = nil
+        hash.each do |k, v|
+          key = k.to_s
+          val = v
+        end
+        SQLite3::Database.new(db_name) do |db|
+          result = db.execute("SELECT * FROM #{table_name} WHERE #{key} = #{val}")
+        end
+        result
+      end
+
+      def table_name
+        self.name.downcase + 's'
+      end
+
+      def db_name
+        Config[:root] + Config[:db_path] + Config[:db_name]
       end
     end
   end
