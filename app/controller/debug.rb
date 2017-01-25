@@ -1,5 +1,5 @@
 # TestController
-class TestApp < Action
+class DebugController < Action
   # Model：Userを使うことを宣言
   use_model :User
 
@@ -11,18 +11,18 @@ class TestApp < Action
   def index
     @action = { Class: fullname, Method: __method__ }
     session[:hoge] = 'Session格納確認' if session[:hoge].nil?
-    render(:html, 'debug')
+    render(:html, 'debug/debug')
   end
 
   def show
     @action = { Class: fullname, Method: __method__ }
-    redirect_to('/api/test')
+    redirect_to('/debug/debug')
     # render(:html, 'debug')
   end
 
   def edit
     @action = { Class: fullname, Method: __method__ }
-    render(:html, 'debug')
+    render(:html, 'debug/debug')
   end
 
   def fullname

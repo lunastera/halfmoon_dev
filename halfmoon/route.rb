@@ -34,12 +34,12 @@ module HalfMoon
       end
 
       # 存在しなければ404
-      return { File: 404, Klass: nil, Action: nil, PathV: nil } if actions.nil?
-      file, klass, action = actions.split(/[:#]/)
+      return { File: 404, Action: nil, PathV: nil } if actions.nil?
+      file, action = actions.split(/\//)
       # メソッド未定義ならindexメソッド
       action = 'index' if action.nil?
       # FilePath, ClassName, MethodName, PathValiable
-      { File: file, Klass: klass, Action: action, PathV: dict }
+      { File: file, Action: action, PathV: dict }
     end
 
     private
@@ -85,11 +85,11 @@ module HalfMoon
 
     # 指定されたパスが存在しているか
     def require_action(action)
-      path, klass, action = action.split(/[:#]/)
+      file, action = action.split(/\//)
       begin
-        require path
+        require Config[:root] + Config[:ctrl_path] + file
       rescue LoadError => ex
-        p path
+        p Config[:root] + Config[:ctrl_path] + file
         raise ex, 'specified file does not exist.'
       end
     end

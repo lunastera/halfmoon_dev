@@ -1,20 +1,15 @@
-
+# 'URL', 'controller/method'
 $mapping = [
-  ['',      'app/controller/debug:TestApp#index'],
-  ['/api', [
-    ['',    'app/controller/debug:TestApp#index'],
-    ['/test', [
-      ['',          'app/controller/debug:TestApp#index'],
-      ['/:id',      'app/controller/debug:TestApp#show'],
-      ['/:id/edit', 'app/controller/debug:TestApp#edit'],
-      ['/:name/:id', 'app/controller/debug:TestApp#show']
-    ]]
+  ['', 'debug/index'],
+  ['/debug', [
+    ['',           'debug/index'],
+    ['/:id',       'debug/show'],
+    ['/:id/edit',  'debug/edit'],
+    ['/:name/:id', 'debug/show']
   ]],
-  ['/user', [
-    ['',    'app/controller/login:Login#index'],
-    ['/login', [
-      ['',          'app/controller/login:Login#login'],
-      ['/:id',      'app/controller/login:Login#index']
-    ]]
+  ['/users', [
+    ['',           'users/index'],
+    ['/index',     'users/index'],
+    ['/show/:id',  'users/show']
   ]]
 ]

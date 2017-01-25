@@ -88,7 +88,6 @@ module HalfMoon
     def show
       path = Config[:root] + '/app/exceptions/'
       files = Dir.glob(path + '*.erb')
-      puts files
       if files.include?(path + @status[:Code].to_s + '.erb')
         body = ERB.new(
           File.open(path + @status[:Code].to_s + '.erb').read

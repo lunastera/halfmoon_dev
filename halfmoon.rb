@@ -12,15 +12,16 @@ require 'halfmoon/action'
 module HalfMoon
   # Action matched Class
   class ActionMatching
-    # @params [Hash] action_args File: ファイルパス, Klass: クラス名, Action: 実行されるメソッド, PathV: パスパラメータ
+    # @params [Hash] action_args File: ファイル名, Action: 実行されるメソッド, PathV: パスパラメータ
     def initialize(action_args)
       @args = action_args
     end
 
     def response_action(req)
-      require_relative @args[:File]
+      require_relative '.' + Config[:ctrl_path] + @args[:File]
 
-      ins = Kernel.const_get(@args[:Klass]).new(compile_params(req))
+      klass = @args[:File].capitalize + 'Controller'
+      ins = Kernel.const_get(klass).new(compile_params(req))
       # ins.before_action
       # file, type = ins.send(@args[:Action].to_sym)
       # ins.after_action
@@ -44,7 +45,6 @@ module HalfMoon
       req = Rack::Request.new(env)
       args = @route.action_variables(req.path_info)
       if args[:File] == 404
-        p args
         ex = ShowException.new(404)
         return ex.show
       end
