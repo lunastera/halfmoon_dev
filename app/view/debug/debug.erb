@@ -9,7 +9,9 @@
 </head>
 <body class="content">
   <h1 class="title">Welcome to HalfMoon!</h1>
-  <h2><%= @user.age.to_s + ': age, ' + @user.name + ': name' %></h2>
+  <% @users.each do |user| %>
+  <%="id: #{user[0]}, name: #{user[1]}, pass: #{user[2]}<br />"%>
+  <% end %>
   <h2><%= 'Sessionを使います: ' + (session[:hoge].nil? ? 'Sessionはありません' : session[:hoge]) %></h2>
   <h2><%= @action[:Class] %>#<%= @action[:Method] %></h2>
   <div class="inline">
@@ -41,6 +43,6 @@
       <% end %>
     </section>
   </div>
-  <% render :html, 'footer' %>
+  <% render :html, 'layout/footer' %>
 </body>
 </html>

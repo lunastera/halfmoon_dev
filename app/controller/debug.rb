@@ -5,7 +5,7 @@ class DebugController < Action
 
   def initialize(params)
     super(params)
-    @user = User.new('testtarou', 24)
+    @users = User.all
   end
 
   def index
@@ -16,7 +16,7 @@ class DebugController < Action
 
   def show
     @action = { Class: fullname, Method: __method__ }
-    redirect_to('/debug/debug')
+    redirect_to('/debug')
     # render(:html, 'debug')
   end
 
