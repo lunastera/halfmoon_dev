@@ -29,8 +29,8 @@ class Action
   # @param [Symbol] model_name 使用するモデルの名前
   # @param [String, nil] file_name 使用するモデルのパス
   def self.use_model(model_name, file_name = nil)
-    file_name = Config[:root] + Config[:model_path] + model_name.to_s.downcase if file_name.nil?
-    autoload model_name, file_name
+    file_name = Config[:root] + Config[:model_path] + model_name.to_s.downcase + '.rb' if file_name.nil?
+    load file_name
   end
 
   def session

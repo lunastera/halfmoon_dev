@@ -2,13 +2,6 @@ module Model
   # model base
   class Base
     class << self
-      # def init
-      #   require 'app/db/migration/' + self.name.downcase + '_migration'
-      #   klass = self.name + 'Migration'
-      #   ins = Kernel.const_get(klass).new
-      #   ins.column
-      # end
-
       def all
         result = nil
         SQLite3::Database.new(db_name) do |db|
@@ -39,6 +32,57 @@ module Model
         Config[:root] + Config[:db_path] + Config[:db_name]
       end
     end
+
+    def initialize
+      @column_order = []
+      this = self.class.name
+      klass_name = this + 'Migration'
+      load Config[:root] + Config[:db_path] + "migration/#{this}_migration.rb"
+      klass = Kernel.const_get(klass_name).new
+      klass.change
+      create_variables(klass)
+    end
+
+    def save
+      table_name = self.table_name
+      values = ''
+      column = ''
+      @column_order.each do |c|
+        next if (v = eval("@#{c}")).nil?
+        column << c
+        v = "'#{v}'" if v.is_a?(String)
+        values << v
+      end
+      column = "(#{column.join(', ')})" unless column.length.zero?
+      values = "(#{values.join(', ')})"
+      sql = "insert into #{table_name}#{column} values#{values}"
+      SQLite3::Database.new(Config[:root] + Config[:db_path] + Config[:db_name]) do |db|
+        db.exec(sql)
+      end
+    end
+
+    # TODO: update
+    # def update
+    #   table_name = self.table_name
+    #
+    #   @column_order.each do |c|
+    #     next if (v = eval("@#{c}")).nil?
+    #     column << c
+    #     v = "'#{v}'" if v.is_a?(String)
+    #     values << v
+    #   end
+    #   sql = "update #{table_name} set "
+    # end
+
+    private
+
+    def create_variables(klass)
+      params = klass.instance_variable_get(:@column)
+      params.each do |k, _|
+        @column_order << k
+        singleton_class.class_eval { attr_accessor k }
+      end
+    end
   end
 
   # model migration
@@ -47,20 +91,15 @@ module Model
       @column = {}
     end
 
-    def connect(dbname = 'default')
-      raise TypeException unless dbname.is_a?(String)
-      @db = SQLite3::Database.new(Config[:root] + Config[:db_path] + dbname)
-    end
-
-    def disconnect
-      @db.close
-    end
-
-    def create_table(table_name, &block)
+    def create_table(table_name, &_)
       yield(self)
-      connect
-      @db.exec(parser(table_name))
-      disconnect
+      @table_name = table_name
+    end
+
+    def save
+      SQLite3::Database.new(Config[:root] + Config[:db_path] + Config[:db_name]) do |db|
+        db.exec(parser(@table_name))
+      end
     end
 
     def string(name, *opt)

@@ -1,4 +1,3 @@
-require_relative 'base'
 require 'digest/sha2'
 # Main config
 class Config < ConfigBase

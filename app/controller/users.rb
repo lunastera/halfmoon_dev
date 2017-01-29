@@ -6,6 +6,7 @@ class UsersController < Action
 
   def show
     @users = User.all
+    user = User.new
     render(:html, 'users/show')
   end
 

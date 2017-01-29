@@ -1,8 +1,9 @@
 $LOAD_PATH << File.expand_path(File.dirname(__FILE__))
 
 require 'halfmoon'
-require 'app/config/routes'
-require 'app/config/config'
+require 'halfmoon/config'
+require_relative './app/config/routes.rb'
+require_relative './app/config/config.rb'
 require 'rack'
 
 Config.add :root, File.expand_path(File.dirname(__FILE__))

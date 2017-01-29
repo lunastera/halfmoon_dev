@@ -8,8 +8,10 @@ require 'halfmoon/exception'
 require 'halfmoon/util'
 require 'halfmoon/route'
 require 'halfmoon/action'
+require 'halfmoon/loader'
 
 module HalfMoon
+  extend HalfMoon::Loader
   # Action matched Class
   class ActionMatching
     # @params [Hash] action_args File: ファイル名, Action: 実行されるメソッド, PathV: パスパラメータ
@@ -18,7 +20,7 @@ module HalfMoon
     end
 
     def response_action(req)
-      require_relative '.' + Config[:ctrl_path] + @args[:File]
+      HalfMoon.hm_load Config[:ctrl_path] + @args[:File]
 
       klass = @args[:File].capitalize + 'Controller'
       ins = Kernel.const_get(klass).new(compile_params(req))
@@ -52,17 +54,5 @@ module HalfMoon
       res = act_match.response_action(req)
       res
     end
-
-    # リクエストを捌く
-    # def request_handler(req, res)
-    #   req_method = HTTP_REQUEST_METHODS[req.request_method]
-    #   if req_method == :HEAD
-    #     req_method_ = :GET
-    #   elsif req_method == :POST && /\A_method=(\w+)/.match(req.env['QUERY_STRING'])
-    #     req_method_ = HTTP_REQUEST_METHODS[$1] || $1
-    #   else
-    #     req_method_ = req_method
-    #   end
-    # end
   end
 end
