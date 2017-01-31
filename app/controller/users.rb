@@ -1,5 +1,4 @@
 class UsersController < Action
-  use_model :User
   def index
     render(:html, 'users/index')
   end

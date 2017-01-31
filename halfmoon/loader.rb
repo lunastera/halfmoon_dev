@@ -15,5 +15,13 @@ module HalfMoon
       location = Config[:root] + file + '.rb'
       load location
     end
+
+    def all_autoload(dir_files)
+      files = Dir.glob(dir_files)
+      files.each do |file|
+        const_name = file.split('/').last.capitalize.gsub(/\.rb$/, '')
+        autoload const_name, file
+      end
+    end
   end
 end

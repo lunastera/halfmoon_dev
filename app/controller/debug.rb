@@ -1,8 +1,5 @@
 # TestController
 class DebugController < Action
-  # Model：Userを使うことを宣言
-  use_model :User
-
   def initialize(params)
     super(params)
     @users = User.all

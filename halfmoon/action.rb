@@ -1,6 +1,9 @@
 require 'halfmoon/model'
+require 'halfmoon/loader'
 # Action
 class Action
+  extend HalfMoon::Loader
+
   MIME_TYPES = {
     html: 'text/html',
     json: 'application/json'
@@ -11,6 +14,7 @@ class Action
     @get   = params[:GET]
     @post  = params[:POST]
     @session = params[:Session]
+    Action.all_autoload Config[:root] + Config[:model_path] + '*.rb'
   end
 
   # 必ずアクション前に実行される処理
